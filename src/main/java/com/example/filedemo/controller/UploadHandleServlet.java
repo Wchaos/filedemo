@@ -5,6 +5,7 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletException;
@@ -29,12 +30,15 @@ import java.util.UUID;
 @RestController
 public class UploadHandleServlet extends HttpServlet {
 
+    @RequestMapping("upload_file")
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("---------");
+        System.out.println(request.getServletContext());
         //得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
-        String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");
+        String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
         //上传时生成的临时文件保存目录
-        String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
+        String tempPath = request.getServletContext().getRealPath("/WEB-INF/temp");
         File tmpFile = new File(tempPath);
         if (!tmpFile.exists()) {
             //创建临时目录
